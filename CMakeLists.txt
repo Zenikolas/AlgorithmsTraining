@@ -3,4 +3,21 @@ project(AlgorithmsTraining)
 
 set(CMAKE_CXX_STANDARD 14)
 
+find_package(GTest REQUIRED)
+
+if (${GTEST_FOUND})
+    message("Found gtest headers: ${GTEST_INCLUDE_DIRS}")
+    message("Found gtest libs: ${GTEST_BOTH_LIBRARIES}")
+else()
+    message(FATAL_ERROR "Gtest library wasn't found!")
+endif()
+
 add_subdirectory(StringCompression)
+add_subdirectory(UniqueCharacterString)
+add_subdirectory(CheckIfStringsPermitted)
+add_subdirectory(ReverseString)
+add_subdirectory(ReverseForwardTree)
+add_subdirectory(SetTreeBrother)
+add_subdirectory(MinSwaps)
+add_subdirectory(LocalMinimum)
+add_subdirectory(TreeSort)
