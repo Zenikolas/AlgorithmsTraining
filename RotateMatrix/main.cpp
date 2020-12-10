@@ -1,35 +1,5 @@
 #include <gtest/gtest.h>
 
-template<size_t N>
-void rotatePoint(uint32_t (&arr)[N][N], size_t& x, size_t& y, uint32_t& tmp)
-{
-  auto xprev = x;
-  x = y;
-  y = N - xprev - 1;
-  std::swap(tmp, arr[x][y]);
-}
-
-template<size_t N>
-void rotateMatrix(uint32_t (&arr)[N][N])
-{
-  size_t jbegin = 0;
-  size_t jend = N - 1;
-
-  for(size_t i = 0; i < N / 2; ++i) {
-    for (size_t j = jbegin; j < jend; ++j) {
-      uint32_t tmp = arr[i][j];
-      size_t x = i;
-      size_t y = j;
-      rotatePoint(arr, x, y, tmp);
-      rotatePoint(arr, x, y, tmp);
-      rotatePoint(arr, x, y, tmp);
-      rotatePoint(arr, x, y, tmp);
-    }
-    ++jbegin;
-    --jend;
-  }
-}
-
 template <size_t N>
 bool isEqual(const uint32_t (&lhs)[N][N], const uint32_t (&rhs)[N][N]) {
   for (size_t i = 0; i < N; ++i) {
@@ -52,6 +22,28 @@ void copyMatrix(uint32_t (&lhs)[N][N], const uint32_t (&rhs)[N][N])
       lhs[i][j] = rhs[i][j];
     }
   }
+}
+
+template <size_t N>
+void rotateMatrix(uint32_t (&arr)[N][N]) {
+    if (N < 2) {
+        return;
+    }
+
+    for (size_t i = 0; i < N / 2; ++i) {
+        for (size_t j = i; j < N - 1 - i; ++j) {
+            size_t ir = i;
+            size_t jr = j;
+            uint32_t buffer;
+            buffer = arr[ir][jr];
+            do {
+                size_t tmp = ir;
+                ir = jr;
+                jr = N - 1 - tmp;
+                std::swap(buffer, arr[ir][jr]);
+            } while (ir != i || jr != j);
+        }
+    }
 }
 
 TEST(RotateMatrix, DoubleTest) {
