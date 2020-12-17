@@ -1,1 +1,2 @@
 add_subdirectory(deleteDuplications)
+add_subdirectory(findKFromLast)
