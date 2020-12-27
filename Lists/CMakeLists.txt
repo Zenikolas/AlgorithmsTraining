@@ -1,2 +1,4 @@
 add_subdirectory(deleteDuplications)
 add_subdirectory(findKFromLast)
+add_subdirectory(deleteFromMiddle)
+add_subdirectory(partitionList)
