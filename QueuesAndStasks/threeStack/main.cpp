@@ -126,6 +126,12 @@ public:
     }
 };
 
+TEST(MultipleStacksFixedTest, EmptyTest) {
+    MultipleStacksFixed<int> multiStacks(3);
+
+    ASSERT_TRUE(multiStacks.isEmpty());
+    ASSERT_FALSE(multiStacks.isFull());
+}
 
 TEST(MultipleStacksFixedTest, SmokeTest) {
     MultipleStacksFixed<int> multiStacks(3, 6);
@@ -202,6 +208,42 @@ TEST(MultipleStacksFixedTest, ShiftTest) {
 
     multiStacks.pop(0);
     multiStacks.pop(1);
+
+    ASSERT_TRUE(multiStacks.isEmpty());
+}
+
+TEST(MultipleStacksFixedTest, ShiftRotationTest) {
+    MultipleStacksFixed<int> multiStacks(4, 8);
+
+    ASSERT_TRUE(multiStacks.isEmpty());
+
+    multiStacks.push(2, 100);
+    multiStacks.push(2, 200);
+    multiStacks.push(2, 300);
+    multiStacks.push(2, 400);
+    multiStacks.push(2, 500);
+    multiStacks.push(2, 600);
+    multiStacks.push(2, 700);
+    multiStacks.push(2, 800);
+
+    ASSERT_TRUE(multiStacks.isFull());
+
+    ASSERT_EQ(800, multiStacks.top(2));
+    multiStacks.pop(2);
+    ASSERT_EQ(700, multiStacks.top(2));
+    multiStacks.pop(2);
+    ASSERT_EQ(600, multiStacks.top(2));
+    multiStacks.pop(2);
+    ASSERT_EQ(500, multiStacks.top(2));
+    multiStacks.pop(2);
+    ASSERT_EQ(400, multiStacks.top(2));
+    multiStacks.pop(2);
+    ASSERT_EQ(300, multiStacks.top(2));
+    multiStacks.pop(2);
+    ASSERT_EQ(200, multiStacks.top(2));
+    multiStacks.pop(2);
+    ASSERT_EQ(100, multiStacks.top(2));
+    multiStacks.pop(2);
 
     ASSERT_TRUE(multiStacks.isEmpty());
 }
