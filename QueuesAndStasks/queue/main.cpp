@@ -2,7 +2,7 @@
 #include <unordered_set>
 
 #include <gtest/gtest.h>
-// Reverse forward tree
+// Implement a queue
 
 struct Node {
     int data;

@@ -1,2 +1,4 @@
 add_subdirectory(queue)
 add_subdirectory(stack)
+add_subdirectory(threeStackDynamic)
+add_subdirectory(threeStack)
