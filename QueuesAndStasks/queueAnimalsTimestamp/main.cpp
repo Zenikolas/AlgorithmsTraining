@@ -9,7 +9,7 @@
 // dequeueCat, dequeue. You mau use built-in List data structure.
 
 struct Animal {
-    enum Type {
+    enum class Type {
         e_unknown,
         e_cat,
         e_dog
@@ -20,86 +20,61 @@ struct Animal {
 };
 
 class Queue {
-    struct AnimalOrdered : public Animal {
-        size_t order;
+    std::list<Animal> m_animals;
 
-        AnimalOrdered(const Animal& animal, size_t _order) : Animal(animal), order(_order) {}
-    };
+    Animal dequeueSpecific(Animal::Type type) {
+            if (m_animals.empty()) {
+                throw std::runtime_error("dequeue on an empty queue");
+            }
 
-    size_t            m_order = 0;
-    std::list<AnimalOrdered> m_cats;
-    std::list<AnimalOrdered> m_dogs;
+            auto end = std::end(m_animals);
+            auto rit = std::begin(m_animals);
+            for (; rit != end; ++rit) {
+                if (rit->type == type) {
+                    break;
+                }
+            }
 
+            if (rit == end) {
+                return Animal();
+            }
+
+            Animal returnAnimal = *rit;
+            m_animals.erase(rit);
+            return returnAnimal;
+    }
 public:
     void enqueue(const Animal& animal) {
-        switch (animal.type) {
-            case Animal::Type::e_cat:
-                m_cats.emplace_back(animal, m_order++);
-                break;
-            case Animal::Type::e_dog:
-                m_dogs.emplace_back(animal, m_order++);
-                break;
-            default:
-                throw std::runtime_error("unknown animal type!");
+        if (animal.type == Animal::Type::e_unknown) {
+            throw std::runtime_error("trying to enqueue unknown animal");
         }
+
+        m_animals.push_back(animal);
     }
 
     Animal dequeue() {
-        if (empty()) {
-            return Animal();
+        if (m_animals.empty()) {
+            throw std::runtime_error("dequeue on an empty queue");
         }
+        Animal ret = m_animals.front();
+        m_animals.pop_front();
 
-        if (m_cats.empty()) {
-            Animal dog = m_dogs.front();
-            m_dogs.pop_front();
-            return dog;
-        }
-
-        if (m_dogs.empty()) {
-            Animal cat = m_cats.front();
-            m_cats.pop_front();
-            return cat;
-        }
-
-        const AnimalOrdered& catRef = m_cats.front();
-        const AnimalOrdered& dogRef = m_dogs.front();
-
-        if (catRef.order < dogRef.order) {
-            Animal cat = catRef;
-            m_cats.pop_front();
-            return cat;
-        }
-
-        Animal dog = dogRef;
-        m_dogs.pop_front();
-        return dog;
+        return ret;
     }
 
     Animal dequeueCat() {
-        if (m_cats.empty()) {
-            return Animal();
-        }
-
-        Animal cat = m_cats.front();
-        m_cats.pop_front();
-        return cat;
+        return dequeueSpecific(Animal::Type::e_cat);
     }
 
     Animal dequeueDog() {
-        if (m_dogs.empty()) {
-            return Animal();
-        }
-
-        Animal dog = m_dogs.front();
-        m_dogs.pop_front();
-        return dog;
+        return dequeueSpecific(Animal::Type::e_dog);
     }
 
-    bool empty() const { return m_cats.empty() && m_dogs.empty(); }
+    bool empty() const { return m_animals.empty(); }
 };
 
 
-TEST(queueAnimalTimeStampTest, SmokeTest) {
+TEST(queueAnimalTest, SmokeTest) {
     Queue qq;
 
     qq.enqueue(Animal{.name = "Marsik", .type = Animal::Type::e_cat});
