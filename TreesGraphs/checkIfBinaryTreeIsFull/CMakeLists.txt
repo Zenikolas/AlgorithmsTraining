@@ -1,0 +1,3 @@
+add_executable(checkIfBinaryTreeIsFull main.cpp)
+
+target_link_libraries(checkIfBinaryTreeIsFull gtest gtest_main pthread)
